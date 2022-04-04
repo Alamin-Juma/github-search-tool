@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: rgb(4, 29, 37);
+      color: white
+    }
+    .header{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      row-gap: 5px;
+    }
+    .container2{
+      display: flex;
+      flex-direction: column;
+    }
+     .rowElements {
+      display: flex;
+      flex-direction: row;
+      margin-left: 20px;
+      column-gap: 10px;
+    }
+ 
+    #profile > img{
+      border-radius: 50%;
+      height: 100px;
+      width: 100px;
+    }
+    input{
+      width: 250px;
+      height: 40px;
+    }
+    #searchBtn {
+      height: 40px;
+      border: 5px solid WHITE;
+      margin-left: 10px;
+      color: #ffffff;
+      background-color: BLACK;
+      width: 100px;
+    }
+    #btnWeb > button, #btnTwitter > button {
+      background-color:blue;
+      height: 30px;
+      color:white;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="header">GITHUB SEARCH TOOL </h1>
+
+  <div class="header">
+    <input type="text" id="search" placeholder="Search A user.... ">
+    <button id="searchBtn" type="button">Search  a GitHub user</button>
+    </div>
+  <div class="container">
+    <div class="info">
+      <div id="profile">
+      </div>
+      <div id="btnWeb">
+      </div>
+      <div id="btnTwitter">
+      </div>
+
+    </div>
+   
+
+    <div class="conatiner2">
+      <div class="rowElements">
+        <p style="font-weight: bolder; text-transform: uppercase;" id="name"></p>
+        <p id="user_name"></p> 
+      </div>
+      <div class="rowElements">
+        <p id="public_repos"></p> 
+        <p id="year"></p> 
+      </div>
+      <div class="rowElements">
+        <p id="location"></p> 
+      </div>
+      <div class="rowElements">
+        <p id="bio">
+        </p> 
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    const searchField = document.getElementById("search")
+    const searchBtn = document.getElementById("searchBtn")
+
+    searchBtn.addEventListener("click", function () {
+     // console.log(searchField.value)
+     //pass the searchfield from value to the function
+     searchQuery(searchField.value)
+    })
+
+    async function searchQuery(query) {
+      const url = `http://api.tvmaze.com/search/shows?q=${query}`
+      const jsonProm = await fetch(`https://api.github.com/users/${query}`)
+
+      
+      const jsonData = await jsonProm.json()
+       console.log(jsonData)
+      
+              const img = document.createElement('img')
+              img.src = jsonData.avatar_url
+              document.getElementById("profile").appendChild(img)
+              //name
+              document.getElementById("name").innerText = jsonData.name
+               //user-name
+               document.getElementById("user_name").innerText = jsonData.login
+              //bio
+              document.getElementById("bio").innerText = jsonData.bio
+              //public_repos: 
+              document.getElementById("public_repos").innerText = `${jsonData.public_repos} Repos`
+               //year created_at: 
+               document.getElementById("year").innerText = `User since ${jsonData.created_at.slice(0, 4)}`
+
+               //location
+              document.getElementById("location").innerText = jsonData.location
+
+              //websites
+              const btnWeb = document.createElement("button")
+              btnWeb.innerText = 'Portfolio'
+              document.getElementById("btnWeb").appendChild(btnWeb)
+              btnWeb.addEventListener("click", function() {
+                window.location.href = jsonData.blog
+              })
+
+               //twitter
+               const twitterButton = document.createElement("button")
+               twitterButton.innerText = 'Twitter url'
+              document.getElementById("btnTwitter").appendChild(twitterButton)
+              btnTwitter.addEventListener("click", function() {
+                window.location.href = ` https://twitter.com/${jsonData.twitter_username}`
+              })
+
+          
+    }
+
+  </script>
+
+</body>
+
+</html>
