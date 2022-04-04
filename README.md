@@ -1,6 +1,6 @@
 # github-search-tool
 
-
+![](Capture.PNG)
 
 ## How to navigate this project
 - Somewhat complex stateful logic: [https://github.com/Alamin-Juma/github-search-tool]
